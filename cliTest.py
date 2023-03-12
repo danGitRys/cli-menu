@@ -1,10 +1,15 @@
 import sys
 import os
+import keyboard
+import time 
 sys.path.append(os.getcwd())
 
 from menu.cliMenu import climenu
 
-list = ["Test","Haho","V","T","ahm"]
+list = ["Test","Haho","V","T","ahm","afafafeafa","eafaf"]
 
 t = climenu()
-t.xyMenu(3,4,list,True,True)
+sle = t.xyMenu(3,3,list,True,True,True) 
+print(sle)
+      
+                                     
