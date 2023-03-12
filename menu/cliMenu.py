@@ -5,6 +5,12 @@ import keyboard
 clear = lambda: os.system('cls')
 
 def printSeperationLine(numberColums:int,columnWidth:int)->None:
+    """_summary_
+
+    Args:
+        numberColums (int): _description_
+        columnWidth (int): _description_
+    """
     line = "+"
     for i in range(0,numberColums):
         for k in range(0,columnWidth):
@@ -13,7 +19,18 @@ def printSeperationLine(numberColums:int,columnWidth:int)->None:
     print(line)
 
 
-def printMenu(optionlist:list,numberColums:int,numberRows:int,longestOption:int,pointerPosition:list,selectedList:list)->None:
+def printMenu(optionlist:list,numberColums:int,numberRows:int,longestOption:int,pointerPosition:list,selectedList:list, markerSign:chr = '*')->None:
+    """_summary_
+
+    Args:
+        optionlist (list): _description_
+        numberColums (int): _description_
+        numberRows (int): _description_
+        longestOption (int): _description_
+        pointerPosition (list): _description_
+        selectedList (list): _description_
+        markerSign (chr, optional): _description_. Defaults to '*'.
+    """
     columnwidth = longestOption+8
     
     printSeperationLine(numberColums,columnwidth)
@@ -37,21 +54,10 @@ def printMenu(optionlist:list,numberColums:int,numberRows:int,longestOption:int,
                 suf = '\x1b[0m'
             
             if currentCoord in selectedList:
-                con="x"
+                con=markerSign
 
             tempLine = tempLine + pre + " ["+con+"] "+suf
 
-            """
-
-            if currentCoord in selectedList and pointerPosition==currentCoord:
-                tempLine = tempLine + '\x1b[6;30;42m' + " [x] " + '\x1b[0m'
-            elif pointerPosition==currentCoord and currentCoord not in selectedList:
-                tempLine = tempLine + '\x1b[6;30;42m' + " [ ] " + '\x1b[0m'
-            elif currentCoord in selectedList:
-                tempLine = tempLine + " [x] "
-            else: 
-                tempLine = tempLine + " [ ] "
-            """
             if tempOption != None:
                 tempLine = tempLine + str(tempOption)
             tempDiff = (longestOption-tempOptionLength) + 3
@@ -74,7 +80,21 @@ class climenu:
     def __init__(self) -> None:
         pass
 
-    def xyMenu(self,x:int,y:int,optionList:list,collapsColumn:bool=True,collapsRow:bool=False,multiselect:bool=False):
+    def xyMenu(self,x:int,y:int,optionList:list,collapsColumn:bool=True,collapsRow:bool=False,multiselect:bool=False,markerSign:chr="*"):
+        """_summary_
+
+        Args:
+            x (int): _description_
+            y (int): _description_
+            optionList (list): _description_
+            collapsColumn (bool, optional): _description_. Defaults to True.
+            collapsRow (bool, optional): _description_. Defaults to False.
+            multiselect (bool, optional): _description_. Defaults to False.
+            markerSign (chr, optional): Character to show which option/s. Defaults to *
+
+        Returns:
+            selection(list): Returns the List of the selected options
+        """
         numberOptions = len(optionList)
         if numberOptions == 0:
             return None
@@ -137,7 +157,7 @@ class climenu:
         runCondition = True
         selectedList:list = []
         while runCondition:
-            printMenu(titelList,x,y,longestTitle,pointerStartPosition,selectedList)
+            printMenu(titelList,x,y,longestTitle,pointerStartPosition,selectedList,markerSign)
             keyboard.read_key()
             if keyboard.is_pressed("right") and pointerStartPosition[0]<x-1:
                 pointerStartPosition[0] = int(pointerStartPosition[0])+1
@@ -172,13 +192,6 @@ class climenu:
                         selectedList.remove([xcurrentPosition,ycurrentPosition])
                     else:
                         selectedList.append([xcurrentPosition,ycurrentPosition])
-
-                   
-                 
-                    
-
-
-
 
             if keyboard.is_pressed("enter"):
                 nameList = []
